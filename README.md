@@ -213,7 +213,6 @@ This project is licensed under the **MIT License** – see the [LICENSE.txt](LIC
 ### Connect With Me
 - 🌐 **GitHub**: [@AnkeshGG](https://github.com/AnkeshGG)
 - 💼 **LinkedIn**: [Ankesh Kumar](https://www.linkedin.com/in/ankesh-kumar-38363a287/)
-- 📧 **Email**: [ankeshkumar.dev@gmail.com](mailto:ankeshkumar.dev@gmail.com)
 - 🔗 **Medium**: [ankeshGG](https://medium.com/@ankeshGG)
 
 ---
