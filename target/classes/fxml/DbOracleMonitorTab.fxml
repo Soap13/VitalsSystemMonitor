@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.vitals.controllers.DbMonitorController">
+    <top>
+        <VBox spacing="10.0">
+            <padding><Insets bottom="10.0" left="15.0" right="15.0" top="15.0" /></padding>
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #ffffff; -fx-border-color: #e1e8ed; -fx-border-radius: 6px; -fx-background-radius: 6px;">
+                    <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
+                    <children>
+                        <Label text="Oracle监控:" textFill="#2c3e50"><font><Font name="System Bold" size="13.0" /></font></Label>
+                        <TextField fx:id="txtHost" promptText="IP地址" text="127.0.0.1" prefWidth="110.0" />
+                        <TextField fx:id="txtPort" promptText="端口" text="1521" prefWidth="60.0" />
+                        <TextField fx:id="txtSid" promptText="SID/服务名" text="orcl" prefWidth="80.0" />
+                        <TextField fx:id="txtUser" promptText="用户名" text="sys" prefWidth="80.0" />
+                        <PasswordField fx:id="txtPass" promptText="密码" prefWidth="100.0" />
+
+                        <Button fx:id="btnConnect" text="连接数据库" onAction="#handleConnect" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" />
+                    </children>
+                </HBox>
+
+                <GridPane hgap="15.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="33.3" />
+                        <ColumnConstraints percentWidth="33.4" />
+                        <ColumnConstraints percentWidth="33.3" />
+                    </columnConstraints>
+                    <rowConstraints><RowConstraints minHeight="10.0" vgrow="SOMETIMES" /></rowConstraints>
+                    <children>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="0">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="活动会话 / 总会话 (Sessions)" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblSessions" text="0 / 0 (Max: 0)" textFill="#2c3e50"><font><Font size="18.0" /></font><VBox.margin><Insets top="5.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="1">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="Oracle SGA (高速缓存 / 共享池)" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblSga" text="0.0 MB / 0.0 MB" textFill="#2c3e50"><font><Font size="18.0" /></font><VBox.margin><Insets top="5.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="2">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="Oracle PGA (程序全局区已分配)" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblPga" text="0.0 MB" textFill="#2c3e50"><font><Font size="18.0" /></font><VBox.margin><Insets top="5.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" style="-fx-background-color: #ffffff;">
+            <tabs>
+                <Tab text="活跃 SQL 实时追踪">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="5.0" /></padding>
+                        <children>
+                            <Label text="当前活动会话 SQL 实时追踪 (Active SQL Monitor)" textFill="#34495e">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                            <SplitPane dividerPositions="0.5" orientation="VERTICAL" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                                <items>
+                                    <TableView fx:id="tblSql">
+                                        <columns>
+                                            <TableColumn fx:id="colSid" text="SID" prefWidth="60.0" />
+                                            <TableColumn fx:id="colUser" text="执行用户" prefWidth="100.0" />
+                                            <TableColumn fx:id="colStatus" text="状态" prefWidth="80.0" />
+                                            <TableColumn fx:id="colTime" text="已执行时间 (秒)" prefWidth="110.0" />
+                                            <TableColumn fx:id="colSqlShort" text="SQL 概要" prefWidth="400.0" />
+                                        </columns>
+                                    </TableView>
+                                    <VBox spacing="5.0">
+                                        <padding><Insets top="5.0" /></padding>
+                                        <children>
+                                            <Label text="完整 SQL 语句 (Full SQL Text):" textFill="#7f8c8d"><font><Font name="System Bold" size="11.0" /></font></Label>
+                                            <TextArea fx:id="txtFullSql" editable="false" wrapText="true" VBox.vgrow="ALWAYS"
+                                                      style="-fx-font-family: 'Consolas'; -fx-font-size: 12px; -fx-text-fill: #2980b9;" />
+                                        </children>
+                                    </VBox>
+                                </items>
+                            </SplitPane>
+                        </children>
+                    </VBox>
+                </Tab>
+
+                <Tab text="客户端连接来源分布">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
+                        <children>
+                            <TableView fx:id="tblConnDist" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colMachine" text="客户端机器 (Machine)" prefWidth="180.0" />
+                                    <TableColumn fx:id="colProgram" text="客户端程序 (Program)" prefWidth="240.0" />
+                                    <TableColumn fx:id="colConnStatus" text="连接会话状态 (Status)" prefWidth="120.0" />
+                                    <TableColumn fx:id="userName" text="用户 (userName)" prefWidth="120.0" />
+                                    <TableColumn fx:id="colConnCount" text="连接数 (Count)" prefWidth="100.0" />
+                                </columns>
+                            </TableView>
+                        </children>
+                    </VBox>
+                </Tab>
+
+                <Tab text="最耗时 SQL TOP 50">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="5.0" /></padding>
+                        <children>
+                            <Label text="按平均执行时间排序的 TOP 50 慢 SQL (Slow SQL Monitor)" textFill="#34495e">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                            <SplitPane dividerPositions="0.6" orientation="VERTICAL" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                                <items>
+                                    <TableView fx:id="tblSlowSql">
+                                        <columns>
+                                            <TableColumn fx:id="colSlowRank" text="排名" prefWidth="50.0" />
+                                            <TableColumn fx:id="colSlowUser" text="用户" prefWidth="100.0" />
+                                            <TableColumn fx:id="colSlowExecutions" text="执行次数" prefWidth="80.0" />
+                                            <TableColumn fx:id="colSlowTotalTime" text="总时间(秒)" prefWidth="90.0" />
+                                            <TableColumn fx:id="colSlowAvgTime" text="平均时间(秒)" prefWidth="100.0" />
+                                            <TableColumn fx:id="colSlowCmdType" text="命令类型" prefWidth="90.0" />
+                                            <TableColumn fx:id="colSlowSqlText" text="SQL 概要" prefWidth="400.0" />
+                                        </columns>
+                                    </TableView>
+                                    <VBox spacing="5.0">
+                                        <padding><Insets top="5.0" /></padding>
+                                        <children>
+                                            <Label text="完整 SQL 语句 (Full SQL Text):" textFill="#7f8c8d"><font><Font name="System Bold" size="11.0" /></font></Label>
+                                            <TextArea fx:id="txtSlowSqlFull" editable="false" wrapText="true" VBox.vgrow="ALWAYS"                                                      style="-fx-font-family: 'Consolas'; -fx-font-size: 12px; -fx-text-fill: #e74c3c;" />
+                                        </children>
+                                    </VBox>
+                                </items>
+                            </SplitPane>
+                        </children>
+                    </VBox>
+                </Tab>
+                <Tab text="死锁与锁等待检测">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="5.0" /></padding>
+                        <children>
+                            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                <children>
+                                    <Label text="Oracle 死锁与锁等待实时监控 (Deadlock &amp; Lock Wait Monitor)" textFill="#34495e">
+                                        <font><Font name="System Bold" size="14.0" /></font>
+                                    </Label>
+                                    <Label fx:id="lblDeadlockCount" text="检测到 0 个锁等待/死锁" textFill="#27ae60">
+                                        <font><Font name="System Bold" size="13.0" /></font>
+                                    </Label>
+                                </children>
+                            </HBox>
+                            <TableView fx:id="tblDeadlocks" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colDeadlockSid" text="会话ID (SID)" prefWidth="80.0" />
+                                    <TableColumn fx:id="colDeadlockUser" text="用户" prefWidth="100.0" />
+                                    <TableColumn fx:id="colDeadlockObject" text="锁定对象" prefWidth="180.0" />
+                                    <TableColumn fx:id="colDeadlockType" text="锁类型" prefWidth="100.0" />
+                                    <TableColumn fx:id="colDeadlockHeld" text="持有模式" prefWidth="100.0" />
+                                    <TableColumn fx:id="colDeadlockRequested" text="请求模式" prefWidth="100.0" />
+                                    <TableColumn fx:id="colDeadlockCtime" text="持续时间(秒)" prefWidth="100.0" />
+                                    <TableColumn fx:id="colDeadlockBlocking" text="是否阻塞" prefWidth="90.0" />
+                                </columns>
+                            </TableView>
+                            <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #e1e8ed; -fx-border-radius: 6px; -fx-padding: 10px;">
+                                <children>
+                                    <Label text="死锁说明：" textFill="#2c3e50">
+                                        <font><Font name="System Bold" size="12.0" /></font>
+                                    </Label>
+                                    <Label text="• 阻塞会话（红色标记）：该会话持有锁并阻塞其他会话，需要重点关注" textFill="#7f8c8d" wrapText="true">
+                                        <font><Font size="11.0" /></font>
+                                    </Label>
+                                    <Label text="• 锁模式：Row-S(行共享)、Row-X(行排他)、Share(共享)、Exclusive(排他)" textFill="#7f8c8d" wrapText="true">
+                                        <font><Font size="11.0" /></font>
+                                    </Label>
+                                    <Label text="• 处理建议：长时间阻塞的会话可能需要联系相关人员释放锁或优化事务" textFill="#7f8c8d" wrapText="true">
+                                        <font><Font size="11.0" /></font>
+                                    </Label>
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+                </Tab>
+
+            </tabs>
+        </TabPane>
+    </center>
+
+</BorderPane>

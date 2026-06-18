@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.vitals.controllers.MySqlMonitorController">
+    <top>
+        <VBox spacing="10.0">
+            <padding><Insets bottom="10.0" left="15.0" right="15.0" top="15.0" /></padding>
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #ffffff; -fx-border-color: #e1e8ed; -fx-border-radius: 6px; -fx-background-radius: 6px;">
+                    <padding><Insets bottom="10.0" left="15.0" right="15.0" top="10.0" /></padding>
+                    <children>
+                        <Label text="MySQL监控:" textFill="#2c3e50"><font><Font name="System Bold" size="13.0" /></font></Label>
+                        <TextField fx:id="txtHost" promptText="IP地址" text="127.0.0.1" prefWidth="110.0" />
+                        <TextField fx:id="txtPort" promptText="端口" text="3306" prefWidth="60.0" />
+                        <TextField fx:id="txtDatabase" promptText="数据库名" text="mysql" prefWidth="100.0" />
+                        <TextField fx:id="txtUser" promptText="用户名" text="root" prefWidth="80.0" />
+                        <PasswordField fx:id="txtPass" promptText="密码" prefWidth="100.0" />
+
+                        <Button fx:id="btnConnect" text="连接数据库" onAction="#handleConnect" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" />
+                    </children>
+                </HBox>
+
+                <GridPane hgap="15.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0" />
+                        <ColumnConstraints percentWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="活动连接数 / 最大连接数" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblConnections" text="0 / 0 (Max: 0)" textFill="#2c3e50"><font><Font size="18.0" /></font><VBox.margin><Insets top="5.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="线程状态 (运行中 / 已连接)" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblThreads" text="运行中: 0 / 已连接: 0" textFill="#2c3e50"><font><Font size="18.0" /></font><VBox.margin><Insets top="5.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="InnoDB Buffer Pool (缓冲池使用率)" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblInnodbBuffer" text="0.0 MB / 0.0 MB (0.0%)" textFill="#2c3e50"><font><Font size="16.0" /></font><VBox.margin><Insets top="5.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-border-color: #e1e8ed; -fx-border-radius: 6px;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <padding><Insets bottom="12.0" left="15.0" right="15.0" top="12.0" /></padding>
+                            <children>
+                                <Label text="Key Buffer &amp; Query Cache" textFill="#7f8c8d"><font><Font name="System Bold" size="12.0" /></font></Label>
+                                <Label fx:id="lblKeyBuffer" text="0.00 MB / 0.00 MB" textFill="#2c3e50"><font><Font size="14.0" /></font><VBox.margin><Insets top="3.0" /></VBox.margin></Label>
+                                <Label fx:id="lblQueryCache" text="0.00 MB / 0.00 MB" textFill="#34495e"><font><Font size="12.0" /></font><VBox.margin><Insets top="2.0" /></VBox.margin></Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" style="-fx-background-color: #ffffff;">
+            <tabs>
+                <Tab text="实时进程监控">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="5.0" /></padding>
+                        <children>
+                            <Label text="当前活跃进程实时监控 (Active Process Monitor)" textFill="#34495e">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                            <SplitPane dividerPositions="0.5" orientation="VERTICAL" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                                <items>
+                                    <TableView fx:id="tblProcesses">
+                                        <columns>
+                                            <TableColumn fx:id="colId" text="ID" prefWidth="60.0" />
+                                            <TableColumn fx:id="colUser" text="用户" prefWidth="100.0" />
+                                            <TableColumn fx:id="colHost" text="主机" prefWidth="150.0" />
+                                            <TableColumn fx:id="colDb" text="数据库" prefWidth="100.0" />
+                                            <TableColumn fx:id="colCommand" text="命令" prefWidth="80.0" />
+                                            <TableColumn fx:id="colTime" text="时间(秒)" prefWidth="80.0" />
+                                            <TableColumn fx:id="colState" text="状态" prefWidth="120.0" />
+                                            <TableColumn fx:id="colInfo" text="SQL 语句" prefWidth="400.0" />
+                                        </columns>
+                                    </TableView>
+                                    <VBox spacing="5.0">
+                                        <padding><Insets top="5.0" /></padding>
+                                        <children>
+                                            <Label text="完整 SQL 语句:" textFill="#7f8c8d"><font><Font name="System Bold" size="11.0" /></font></Label>
+                                            <TextArea fx:id="txtFullSql" editable="false" wrapText="true" VBox.vgrow="ALWAYS"
+                                                      style="-fx-font-family: 'Consolas'; -fx-font-size: 12px; -fx-text-fill: #2980b9;" />
+                                        </children>
+                                    </VBox>
+                                </items>
+                            </SplitPane>
+                        </children>
+                    </VBox>
+                </Tab>
+
+                <Tab text="慢查询 TOP 50">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="5.0" /></padding>
+                        <children>
+                            <Label text="按总执行时间排序的 TOP 50 慢查询 (Slow Query Monitor)" textFill="#34495e">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                            <SplitPane dividerPositions="0.6" orientation="VERTICAL" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                                <items>
+                                    <TableView fx:id="tblSlowQuery">
+                                        <columns>
+                                            <TableColumn fx:id="colSlowRank" text="排名" prefWidth="50.0" />
+                                            <TableColumn fx:id="colSlowSql" text="SQL 概要" prefWidth="300.0" />
+                                            <TableColumn fx:id="colSlowExecutions" text="执行次数" prefWidth="80.0" />
+                                            <TableColumn fx:id="colSlowTotalTime" text="总时间(秒)" prefWidth="90.0" />
+                                            <TableColumn fx:id="colSlowAvgTime" text="平均时间(秒)" prefWidth="100.0" />
+                                            <TableColumn fx:id="colSlowRowsExamined" text="扫描行数" prefWidth="90.0" />
+                                            <TableColumn fx:id="colSlowRowsSent" text="返回行数" prefWidth="90.0" />
+                                            <TableColumn fx:id="colSlowFirstSeen" text="首次执行时间" prefWidth="140.0" />
+                                            <TableColumn fx:id="colSlowLastSeen" text="最后执行时间" prefWidth="140.0" />
+                                        </columns>
+                                    </TableView>
+                                    <VBox spacing="5.0">
+                                        <padding><Insets top="5.0" /></padding>
+                                        <children>
+                                            <Label text="完整 SQL 语句:" textFill="#7f8c8d"><font><Font name="System Bold" size="11.0" /></font></Label>
+                                            <TextArea fx:id="txtSlowSqlFull" editable="false" wrapText="true" VBox.vgrow="ALWAYS"
+                                                      style="-fx-font-family: 'Consolas'; -fx-font-size: 12px; -fx-text-fill: #e74c3c;" />
+                                        </children>
+                                    </VBox>
+                                </items>
+                            </SplitPane>
+                        </children>
+                    </VBox>
+                </Tab>
+
+                <Tab text="🔒 死锁与锁等待检测">
+                    <VBox spacing="10.0">
+                        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="5.0" /></padding>
+                        <children>
+                            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                <children>
+                                    <Label text="MySQL 死锁与锁等待实时监控 (Lock Wait Monitor)" textFill="#34495e">
+                                        <font><Font name="System Bold" size="14.0" /></font>
+                                    </Label>
+                                    <Label fx:id="lblLockCount" text="检测到 0 个锁等待" textFill="#27ae60">
+                                        <font><Font name="System Bold" size="13.0" /></font>
+                                    </Label>
+                                </children>
+                            </HBox>
+                            <TableView fx:id="tblLocks" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colWaitingThread" text="等待线程ID" prefWidth="100.0" />
+                                    <TableColumn fx:id="colBlockingThread" text="阻塞线程ID" prefWidth="100.0" />
+                                    <TableColumn fx:id="colLockedTable" text="锁定表" prefWidth="150.0" />
+                                    <TableColumn fx:id="colLockedIndex" text="锁定索引" prefWidth="120.0" />
+                                    <TableColumn fx:id="colWaitingQuery" text="等待的SQL" prefWidth="250.0" />
+                                    <TableColumn fx:id="colBlockingQuery" text="阻塞的SQL" prefWidth="250.0" />
+                                    <TableColumn fx:id="colWaitTime" text="等待时间(秒)" prefWidth="100.0" />
+                                    <TableColumn fx:id="colIsBlocking" text="是否阻塞" prefWidth="90.0" />
+                                </columns>
+                            </TableView>
+                            <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #e1e8ed; -fx-border-radius: 6px; -fx-padding: 10px;">
+                                <children>
+                                    <Label text="锁等待说明：" textFill="#2c3e50">
+                                        <font><Font name="System Bold" size="12.0" /></font>
+                                    </Label>
+                                    <Label text="• 阻塞会话（红色标记）：该事务持有锁并阻塞其他事务，需要重点关注" textFill="#7f8c8d" wrapText="true">
+                                        <font><Font size="11.0" /></font>
+                                    </Label>
+                                    <Label text="• InnoDB 引擎支持行级锁，可能出现锁等待情况" textFill="#7f8c8d" wrapText="true">
+                                        <font><Font size="11.0" /></font>
+                                    </Label>
+                                    <Label text="• 处理建议：优化事务逻辑，减少锁持有时间，避免长时间运行的事务" textFill="#7f8c8d" wrapText="true">
+                                        <font><Font size="11.0" /></font>
+                                    </Label>
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+
+</BorderPane>
