@@ -1,0 +1,90 @@
+/* 1. 主背景与卡片容器基础配置 */
+.root {
+    -fx-background-color: #f5f6fa; /* 浅灰色背景，护眼且现代 */
+}
+
+/* 顶部状态卡片样式 */
+.monitor-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;   /* 优雅的小圆角 */
+    -fx-border-radius: 8px;
+    -fx-border-color: #e1e8ed;     /* 微弱的卡片边框 */
+    -fx-border-width: 1px;
+    /* 鼠标悬停微调，增加交互感 */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 10, 0, 0, 2);
+}
+
+/* 下方图表卡片样式 */
+.chart-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #e1e8ed;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 12, 0, 0, 2);
+}
+
+/* 2. JavaFX LineChart 图表样式美化 */
+
+/* 图表绘图区的网格线微调（隐藏垂直线，虚线化水平线） */
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #f1f2f6;
+    -fx-stroke-dash-array: 3px, 3px; /* 虚线效果 */
+}
+
+/* 核心折线颜色与粗细 (复刻 VisualVM 的经典科技蓝) */
+.chart-series-line {
+    -fx-stroke: #0984e3;
+    -fx-stroke-width: 2.5px; /* 让线条更扎实，不突兀 */
+}
+
+/* 渐变填充背景 (把 AreaChart/LineChart 下方填满微弱色彩，大厂仪表盘常用视觉手法) */
+.chart-plot-background {
+    -fx-background-color: #ffffff;
+}
+
+/* 坐标轴样式调整 */
+.axis {
+    -fx-tick-label-fill: #636e72; /* 刻度文字改为高级灰 */
+    -fx-tick-label-font-size: 11px;
+}
+.axis-label {
+    -fx-text-fill: #2d3436;
+    -fx-font-size: 12px;
+}
+
+/* TableView 基础美化 */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #e1e8ed;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+}
+
+/* 表头美化：扁平风 */
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa;
+}
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: #e1e8ed;
+    -fx-border-width: 0 1px 1px 0;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+/* 数据行微调：交替斑马线颜色，更易阅读 */
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+.table-row-cell:odd {
+    -fx-background-color: #fafbfc;
+}
+.table-row-cell:selected {
+    -fx-background-color: #dfe6e9; /* 选中行变灰蓝色 */
+}
