@@ -2,7 +2,10 @@ package com.example.vitals.controllers;
 
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+<<<<<<< HEAD
 import javafx.event.ActionEvent;
+=======
+>>>>>>> e27c0b92f0ec0a6f0642b63d6dba0e73ceea1f12
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +68,37 @@ public class DashboardController {
     private Label uploadSpeedLabel;
     @FXML
     private Label downloadSpeedLabel;
+=======
+import java.util.Objects;
+
+public class DashboardController {
+    // Load HistoricalView Component
+    @FXML private Button viewHistoryButton;
+
+    // CPU Components
+    @FXML private LineChart<String, Number> cpuChart;
+    @FXML private Label cpuPercentageLabel;
+
+    // Memory Components
+    @FXML private Circle memoryBackgroundCircle;
+    @FXML private Circle memoryProgressCircle;
+    @FXML private Label memoryUsedLabel;
+    @FXML private Label memoryPercentageLabel;
+    @FXML private Label memoryUsedStatLabel;
+    @FXML private Label memoryAvailableLabel;
+    @FXML private Label memoryTotalLabel;
+
+    // Disk Components - Main System Disk
+    @FXML private ProgressBar totalDiskProgressBar;
+    @FXML private Label diskUsedLabel;
+    @FXML private Label diskAvailableLabel;
+    @FXML private Label diskTotalLabel;
+
+    // Network Components
+    @FXML private LineChart<String, Number> networkChart;
+    @FXML private Label uploadSpeedLabel;
+    @FXML private Label downloadSpeedLabel;
+>>>>>>> e27c0b92f0ec0a6f0642b63d6dba0e73ceea1f12
 
     // Chart data series
     private XYChart.Series<String, Number> cpuSeries;
@@ -396,6 +431,7 @@ public class DashboardController {
         }
         return 0.0;
     }
+<<<<<<< HEAD
 
     /**
      * 假设项目原本的导航切换方法叫 handleNavigation 或 switchView
@@ -459,4 +495,6 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+=======
+>>>>>>> e27c0b92f0ec0a6f0642b63d6dba0e73ceea1f12
 }

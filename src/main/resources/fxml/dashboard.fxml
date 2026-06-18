@@ -30,9 +30,12 @@
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
+<<<<<<< HEAD
             <Button fx:id="btnMysqlDB" text="Mysql监控" onAction="#handleMysqlDB" prefWidth="150.0" styleClass="header-button"/>
             <Button fx:id="btnDB" text="Oracle监控" onAction="#handleOracleDB" prefWidth="150.0" styleClass="header-button"/>
             <Button fx:id="btnJvm" text="JVM 监控" onAction="#handleNavigation" prefWidth="150.0" styleClass="header-button"/>
+=======
+>>>>>>> e27c0b92f0ec0a6f0642b63d6dba0e73ceea1f12
         </HBox>
     </top>
 

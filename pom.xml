@@ -46,6 +46,7 @@
             <version>2.0.27</version>
         </dependency>
 
+<<<<<<< HEAD
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc11</artifactId>
@@ -64,6 +65,9 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
+=======
+
+>>>>>>> e27c0b92f0ec0a6f0642b63d6dba0e73ceea1f12
     </dependencies>
 
     <build>
